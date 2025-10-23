@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="fullscreen-center">
+    <div class="card-futuristic" style="max-width:700px; text-align:center; padding:50px 40px; backdrop-filter: blur(5px);">
+        <h1 style="color:#00ffff; font-family:'Orbitron', sans-serif; font-size:3rem; text-shadow: 0 0 15px #00ffff, 0 0 40px #0077ff;">
+            🚀 Welcome to TaskMaster
+        </h1>
+        <p style="color:#c0c0c0; font-size:1.2rem; margin-top:20px;">
+            TaskMaster is your futuristic productivity hub. Organize your tasks, track your progress, 
+            and turn your goals into achievements. Stay focused, stay motivated, and reach your full potential!
+        </p>
+
+        <div class="about-section" style="margin-top:30px; padding:20px; background: rgba(15,15,40,0.85); border-radius:15px; border:1px solid #00ffff40; box-shadow:0 0 15px #00ffff20;">
+            <h2 style="color:#00ffff; font-family:'Orbitron', sans-serif; margin-bottom:15px;">Why TaskMaster?</h2>
+            <p style="color:#c0c0c0;">
+                ✅ Prioritize tasks effortlessly<br>
+                ✅ Create categories to organize work<br>
+                ✅ Track your progress visually<br>
+                ✅ Boost your productivity with ease
+            </p>
+        </div>
+
+        <div style="margin-top:35px;">
+            <a href="{% url 'login' %}" class="btn-neon" style="margin-right:15px; font-size:1.1rem;">🔑 Login</a>
+            <a href="{% url 'register' %}" class="btn-neon" style="font-size:1.1rem;">📝 Register</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

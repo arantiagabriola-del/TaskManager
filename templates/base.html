@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Taskify | To-Do Tracker{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+  <!-- Background Animation -->
+  <div id="particles-js"></div>
+
+  <!-- Sidebar -->
+{% if user.is_authenticated %}
+<div class="sidebar">
+  <h3 class="logo">⚡ TASKIFY</h3>
+  <ul>
+    <li><a href="{% url 'dashboard' %}" class="nav-link">⚡Dashboard</a></li>
+    <li><a href="{% url 'home' %}" class="sidebar-link">🏠 Home</a></li>
+    <li><a href="{% url 'about' %}" class="sidebar-link">ℹ️ About</a></li>
+    <li><a href="{% url 'task_list' %}" class="sidebar-link">📋 My Tasks</a></li>
+    <li><a href="{% url 'task_create' %}" class="sidebar-link">➕ Add Task</a></li>
+    
+    <!-- ✅ Logout Form -->
+    <li>
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link text-decoration-none p-0 sidebar-link">
+          🚪 Logout
+        </button>
+      </form>
+    </li>
+  </ul>
+</div>
+
+      <li><a href="{% url 'login' %}" class="sidebar-link">🔑 Login</a></li>
+      <li><a href="{% url 'register' %}" class="sidebar-link">📝 Register</a></li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Particle.js Animation -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {"value": 70},
+        "size": {"value": 3},
+        "move": {"speed": 1},
+        "line_linked": {"enable": true, "color": "#00ffff"},
+        "color": {"value": "#00ffff"}
+      }
+    });
+  </script>
+
+  <style>
+    /* ✅ Sidebar Styling */
+    body {
+      margin: 0;
+      background-color: #0b0c10;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: rgba(15, 15, 20, 0.9);
+      height: 100vh;
+      position: fixed;
+      padding: 25px 20px;
+      border-right: 2px solid #00ffff;
+      z-index: 2;
+    }
+
+    .sidebar .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem;
+      color: #00ffff;
+      margin-bottom: 30px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin: 12px 0;
+    }
+
+    .sidebar-link {
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .sidebar-link:hover {
+      color: #00ffff;
+      transform: translateX(4px);
+      text-decoration: none;
+    }
+
+    /* ✅ Main Content Area */
+    .content {
+      margin-left: 250px;
+      padding: 30px;
+      z-index: 1;
+    }
+
+    /* ✅ Background Animation Container */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    button.sidebar-link {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      padding: 0;
+    }
+  </style>
+</body>
+</html>

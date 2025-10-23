@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | Taskify{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>⚡ Welcome, {{ request.user.username }}!</h1>
+    <p>Your productivity hub — track tasks and achievements.</p>
+  </div>
+
+  <!-- 🔔 Notifications Section -->
+  {% if notifications or reminders %}
+  <div class="notification-wrapper">
+    {% if notifications %}
+    <div class="notifications-section card-glow">
+      <h2>🔔 Notifications</h2>
+      <ul>
+        {% for note in notifications %}
+          <li>{{ note }}</li>
+        {% empty %}
+          <li>No notifications at the moment.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if reminders %}
+    <div class="reminders-section card-glow">
+      <h2>⏰ Upcoming Tasks (Next 24 Hours)</h2>
+      <ul>
+        {% for task in reminders %}
+          <li>
+            <strong>{{ task.title }}</strong> — due {{ task.due_date|date:"M d, Y" }}
+          </li>
+        {% empty %}
+          <li>No upcoming tasks in the next 24 hours.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Stats Cards -->
+  <div class="stats-cards">
+    <div class="card-neon">
+      <h3>✅ Completed</h3>
+      <p>{{ completed_count }}</p>
+    </div>
+    <div class="card-neon">
+      <h3>🕒 Pending</h3>
+      <p>{{ pending_count }}</p>
+    </div>
+    <div class="card-neon">
+      <h3>📋 Total Tasks</h3>
+      <p>{{ total_tasks }}</p>
+    </div>
+  </div>
+
+  <!-- ✨ Productivity Summary -->
+  <div class="productivity-summary">
+    <h2>📊 Productivity Summary</h2>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h4>🔥 Tasks Completed Today</h4>
+        <p>{{ tasks_completed_today }}</p>
+      </div>
+      <div class="summary-card">
+        <h4>📅 Tasks Completed This Week</h4>
+        <p>{{ tasks_completed_week }}</p>
+      </div>
+      <div class="summary-card">
+        <h4>⚠️ Overdue Tasks</h4>
+        <p>{{ overdue_tasks }}</p>
+      </div>
+      <div class="summary-card">
+        <h4>⏱️ Average Focus Time</h4>
+        <p>{{ avg_focus_time }} mins/day</p>
+      </div>
+    </div>
+
+    <!-- 💬 Motivational Message -->
+    <div class="motivation">
+      <p>💡 {{ motivational_message }}</p>
+    </div>
+  </div>
+
+  <!-- Add Task Button -->
+  <div class="add-task-container">
+    <a href="{% url 'task_create' %}" class="btn-neon btn-lg">➕ Add Task</a>
+  </div>
+
+  <!-- Task List -->
+  <div class="task-table-wrapper">
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Priority</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+        <tr class="{% if task.status == 'COMPLETED' %}completed{% endif %}">
+          <td>{{ task.title }}</td>
+          <td>
+            {% for cat in task.categories.all %}
+              <span class="category">{{ cat.title }}</span>
+            {% empty %}
+              <span class="category none">—</span>
+            {% endfor %}
+          </td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.due_date|date:"M d, Y" }}</td>
+          <td>{{ task.status }}</td>
+          <td class="actions">
+            {% if task.status != 'COMPLETED' %}
+            <a href="{% url 'task_complete' task.pk %}" class="btn-neon btn-sm">✔</a>
+            {% endif %}
+            <a href="{% url 'task_update' task.pk %}" class="btn-neon btn-sm">✏️</a>
+            <a href="{% url 'task_delete' task.pk %}" class="btn-neon btn-sm">🗑️</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="color:#888;">No tasks yet. Click "Add Task" above to create one!</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Styles -->
+<style>
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Header */
+.dashboard-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffff;
+  text-shadow: 0 0 20px #00ffff;
+  margin-bottom: 10px;
+}
+.dashboard-header p {
+  color: #b0b0b0;
+  margin-bottom: 40px;
+}
+
+/* 🔔 Notifications & Reminders */
+.notification-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.card-glow {
+  background: rgba(10, 10, 30, 0.85);
+  border: 2px solid #00ffff40;
+  border-radius: 15px;
+  padding: 20px;
+  color: #00ffff;
+  box-shadow: 0 0 15px #00ffff40;
+  text-align: left;
+}
+.card-glow h2 {
+  color: #7afcff;
+  text-shadow: 0 0 10px #00ffff60;
+  margin-bottom: 10px;
+}
+.card-glow ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card-glow li {
+  margin: 6px 0;
+  padding-left: 10px;
+  border-left: 3px solid #00ffff60;
+}
+
+/* Stats Cards */
+.stats-cards {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.card-neon {
+  background: rgba(10, 10, 30, 0.85);
+  padding: 25px 35px;
+  border-radius: 18px;
+  border: 2px solid #00ffff30;
+  color: #00ffff;
+  min-width: 150px;
+  text-align: center;
+  box-shadow: 0 0 15px #00ffff50;
+  transition: 0.3s;
+}
+.card-neon:hover {
+  box-shadow: 0 0 30px #00ffff, 0 0 45px #0077ff80;
+  transform: translateY(-5px);
+}
+
+/* Productivity */
+.productivity-summary {
+  background: rgba(10, 10, 25, 0.8);
+  border: 2px solid #00ffff30;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 40px;
+  color: #c0c0c0;
+  box-shadow: 0 0 15px #00ffff20;
+}
+.summary-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+.summary-card {
+  background: rgba(15, 15, 35, 0.9);
+  border: 1px solid #00ffff30;
+  border-radius: 12px;
+  padding: 20px 25px;
+  width: 220px;
+  text-align: center;
+  color: #00ffff;
+  box-shadow: 0 0 10px #00ffff30;
+}
+.summary-card h4 {
+  margin-bottom: 10px;
+  color: #7afcff;
+}
+
+.motivation {
+  margin-top: 20px;
+  font-style: italic;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff80;
+}
+
+/* Buttons */
+.add-task-container {
+  margin-bottom: 50px;
+}
+.btn-neon {
+  background: linear-gradient(90deg, #00ffff, #0077ff);
+  border: none;
+  color: #0a0a0f;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffff80;
+}
+.btn-neon:hover {
+  box-shadow: 0 0 25px #00ffff, 0 0 40px #0077ff80;
+  transform: scale(1.05);
+}
+
+/* Task Table */
+.task-table-wrapper { overflow-x: auto; }
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #c0c0c0;
+  min-width: 700px;
+}
+.task-table th, .task-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #00ffff20;
+}
+.task-table tr.completed td {
+  text-decoration: line-through;
+  color: #888;
+}
+.category {
+  background: #0077ff20;
+  color: #00ffff;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-right: 4px;
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .dashboard-container { padding: 30px 10px; }
+  .card-neon { min-width: 120px; padding: 20px; }
+}
+@media (max-width: 768px) {
+  .stats-cards, .summary-grid {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .summary-card, .card-neon {
+    width: 90%;
+  }
+  .task-table th, .task-table td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+</style>
+{% endblock %}

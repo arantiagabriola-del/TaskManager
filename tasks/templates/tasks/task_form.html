@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}New Task{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:600px;">
+  <div class="card-futuristic">
+    <h2 class="text-center mb-4" style="color:#00ffff;">🧠 Task Form</h2>
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Title -->
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" name="title" value="{{ task.title|default_if_none:'' }}" class="form-control" required>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control">{{ task.description|default_if_none:'' }}</textarea>
+      </div>
+
+      <!-- Due Date -->
+      <div class="mb-3">
+        <label class="form-label">Due Date</label>
+        <input type="date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}" class="form-control">
+      </div>
+
+      <!-- Priority -->
+      <div class="mb-3">
+        <label class="form-label">Priority</label>
+        <select name="priority" class="form-control">
+          <option value="LOW" {% if task.priority == 'LOW' %}selected{% endif %}>Low</option>
+          <option value="MEDIUM" {% if task.priority == 'MEDIUM' or not task.priority %}selected{% endif %}>Medium</option>
+          <option value="HIGH" {% if task.priority == 'HIGH' %}selected{% endif %}>High</option>
+        </select>
+      </div>
+
+      <!-- Categories -->
+      {% if categories %}
+      <div class="mb-3">
+        <label class="form-label">Categories</label>
+        <select name="categories" class="form-control" multiple>
+          {% for category in categories %}
+            <option value="{{ category.id }}"
+              {% if task and category in task.categories.all %}selected{% endif %}>
+              {{ category.title }}
+            </option>
+          {% endfor %}
+        </select>
+        <small class="form-small">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</small>
+      </div>
+      {% endif %}
+
+      <!-- New Category -->
+      <div class="mb-3">
+        <label class="form-label">➕ Add New Category</label>
+        <input type="text" name="new_category" class="form-control" placeholder="Type a new category name">
+        <small class="form-small">If filled, this will be added as a new category for this task</small>
+      </div>
+
+      <button type="submit" class="btn btn-neon w-100">💾 Save Task</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

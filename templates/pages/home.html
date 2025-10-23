@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Home | Taskify{% endblock %}
+
+{% block content %}
+<div class="fullscreen-center">
+
+  <div class="card-futuristic" style="max-width: 850px; padding: 60px; position: relative; overflow: hidden;">
+    
+    <!-- Glowing Accent Orb -->
+    <div style="
+      position:absolute;
+      top:-80px; right:-80px;
+      width:160px; height:160px;
+      background: radial-gradient(circle, #00ffff40, transparent);
+      border-radius:50%;
+      filter: blur(40px);
+      z-index:0;
+      animation: floatGlow 6s ease-in-out infinite alternate;
+    "></div>
+
+    <h1 class="fw-bold" style="font-size: 3rem; z-index:2; position:relative;">
+      ⚡ Welcome to <span style="color:#00ffff;">Taskify</span>
+    </h1>
+
+    <p style="color:#b0b0b0; font-size: 1.2rem; margin-top: 20px; line-height: 1.8; z-index:2; position:relative;">
+      Organize your life — one glowing task at a time.<br>
+      Experience the future of productivity with AI-inspired design, smooth animations, and total control.
+    </p>
+
+    <div style="margin-top: 40px; z-index:2; position:relative;">
+      <a href="{% url 'dashboard' %}" class="btn-neon btn-lg" style="font-size: 1.1rem;">
+        🚀 View My Tasks
+      </a>
+    </div>
+
+    <div style="margin-top: 50px; color:#888; font-size: 0.9rem;">
+      <span>Version 1.0.0 | Crafted with 💙 and ⚡</span>
+    </div>
+  </div>
+
+  <!-- Animated Tagline -->
+  <div style="margin-top: 40px; animation: fadeIn 2.5s ease;">
+    <h3 style="color:#00ffff; text-shadow: 0 0 10px #00ffff; font-family:'Orbitron', sans-serif;">
+      "Stay Focused. Stay Futuristic."
+    </h3>
+  </div>
+
+</div>
+
+<!-- Animations -->
+<style>
+  .fullscreen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+  }
+
+  @keyframes floatGlow {
+    from { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+    to { transform: translateY(20px) rotate(10deg); opacity: 1; }
+  }
+
+  .btn-neon {
+    animation: glowPulse 2s infinite alternate;
+    background: linear-gradient(90deg, #00ffff, #0077ff);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: #0b0c10;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  @keyframes glowPulse {
+    from { box-shadow: 0 0 10px #00ffff50; }
+    to { box-shadow: 0 0 25px #00ffff; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}

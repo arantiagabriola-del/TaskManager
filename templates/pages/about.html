@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}About | Taskify{% endblock %}
+
+{% block content %}
+<div class="fullscreen-center">
+  <div class="card-futuristic" style="max-width: 750px; padding: 40px; position: relative;">
+    
+    <h1 class="fw-bold" style="font-size: 2.3rem;">
+      🚀 About <span style="color:#00ffff;">Taskify</span>
+    </h1>
+    <hr style="border: none; height: 2px; background: linear-gradient(90deg, #00ffff, #0077ff); width: 60%; margin: 20px auto; box-shadow: 0 0 10px #00ffff;">
+
+    <p style="color:#b0b0b0; font-size: 1.05rem; line-height: 1.6; margin-top: 20px;">
+      <strong>Taskify</strong> is your futuristic task management companion — built to help you organize, focus, and
+      conquer your daily goals with style. Inspired by modern UI and AI-driven design, it merges performance and
+      elegance into one neon-powered experience.
+    </p>
+
+    <div class="card-futuristic" style="margin-top: 25px; background: rgba(10,10,30,0.8); border: 1px solid #00ffff30;">
+      <h3 class="fw-bold" style="color:#00ffff; margin-bottom:15px;">💡 Our Vision</h3>
+      <p style="color:#c0c0c0; font-size:0.95rem;">
+        To redefine productivity — blending futuristic aesthetics with simplicity, so every user feels empowered,
+        focused, and in control of their time.
+      </p>
+    </div>
+
+    <div class="card-futuristic" style="margin-top: 20px; background: rgba(10,10,30,0.8); border: 1px solid #00ffff30;">
+      <h3 class="fw-bold" style="color:#00ffff; margin-bottom:15px;">⚙️ Built With</h3>
+      <ul style="list-style:none; padding:0; color:#c0c0c0; font-size:0.95rem;">
+        <li>🧠 <strong>Django</strong> — the intelligent backend framework</li>
+        <li>🎨 <strong>Bootstrap 5</strong> — sleek, responsive layouts</li>
+        <li>🌌 <strong>Custom Neon CSS</strong> — glowing futuristic vibe</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <p class="text-secondary">Version 1.0.0</p>
+      <a href="/" class="btn-neon mt-3">Back to Home</a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .fullscreen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* vertically center */
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .card-futuristic:hover {
+    animation: pulseGlow 2s infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    from { box-shadow: 0 0 15px #00ffff40; }
+    to { box-shadow: 0 0 35px #00ffff; }
+  }
+</style>
+{% endblock %}
